@@ -1,62 +1,58 @@
 {
-  "version": "3.2.0",
-  "author": "matejdro",
-  "private": true,
-  "dependencies": {
-    "pebble-activity-indicator-layer": "1.0.3"
-  },
-  "keywords": [
-    "pebble-app"
-  ],
-  "pebble": {
-    "sdkVersion": "3",
-    "resources": {
-      "media": [
-        {
-          "menuIcon": true,
-          "type": "bitmap",
-          "name": "ICON",
-          "file": "icon.png"
-        },
-        {
-          "type": "bitmap",
-          "name": "BUBBLE",
-          "file": "bubble.png"
-        },
-        {
-          "type": "bitmap",
-          "name": "INDICATOR_BUSY",
-          "file": "busy.png"
-        },
-        {
-          "type": "bitmap",
-          "name": "COGWHEEL",
-          "file": "cogwheel.png"
-        },
-        {
-          "type": "bitmap",
-          "name": "RECENT",
-          "file": "recent.png"
-        }
-      ]
+    "author": "matejdro",
+    "dependencies": {
+        "pebble-activity-indicator-layer": "1.0.3"
     },
-    "projectType": "native",
-    "uuid": "0a7575eb-e5b9-456b-8701-3eacb62d74f1",
-    "messageKeys": {},
-    "enableMultiJS": false,
-    "displayName": "Notify Center",
-    "watchapp": {
-      "onlyShownOnCommunication": false,
-      "hiddenApp": false,
-      "watchface": false
-    },
-    "targetPlatforms": [
-      "aplite",
-      "basalt",
-      "chalk",
-	  "diorite"
+    "keywords": [
+        "pebble-app"
     ],
-    "capabilities": []
-  },
-  "name": "Notifications"
+    "name": "notifications",
+    "pebble": {
+        "displayName": "Notify Center",
+        "enableMultiJS": false,
+        "messageKeys": {},
+        "projectType": "native",
+        "resources": {
+            "media": [
+                {
+                    "file": "images/recent.png",
+                    "name": "RECENT",
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/icon.png",
+                    "menuIcon": true,
+                    "name": "ICON",
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/cogwheel.png",
+                    "name": "COGWHEEL",
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/busy.png",
+                    "name": "INDICATOR_BUSY",
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/bubble.png",
+                    "name": "BUBBLE",
+                    "type": "bitmap"
+                }
+            ]
+        },
+        "sdkVersion": "3",
+        "targetPlatforms": [
+            "aplite",
+            "basalt",
+            "chalk",
+            "diorite"
+        ],
+        "uuid": "0a7575eb-e5b9-456b-8701-3eacb62d74f1",
+        "watchapp": {
+            "watchface": false
+        }
+    },
+    "version": "3.2.0"
 }
