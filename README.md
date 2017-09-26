@@ -6,6 +6,7 @@ A personal fork, mostly for aesthetic reasons. (Functionally, PNC has everything
 Things that would be good:
 
 - making my aesthetic changes a configuration option, so that it doesn't conflict/compete with other options
+- making notification image not display in background: I like it, I want it, but scrolling 'up' to see it is weird and ugly.
 
 A great many thanks to matejdro for this amazing app!
 
