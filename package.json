@@ -8,7 +8,7 @@
     ],
     "name": "notifications",
     "pebble": {
-        "displayName": "Notify Center",
+        "displayName": "Notification Centre",
         "enableMultiJS": false,
         "messageKeys": {},
         "projectType": "native",
@@ -38,6 +38,11 @@
                 {
                     "file": "images/bubble.png",
                     "name": "BUBBLE",
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/heart.png",
+                    "name": "HEART",
                     "type": "bitmap"
                 }
             ]

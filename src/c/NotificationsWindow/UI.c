@@ -28,6 +28,7 @@ static int16_t statusbarSize;
 static int16_t yScrollOffset = 0;
 static int16_t maxScroll = 0;
 
+static GBitmap *jumboji;
 #ifdef PBL_COLOR
 static BitmapLayer* notificationBitmapLayer;
 static Layer* bitmapShadingLayer;
@@ -99,13 +100,7 @@ void nw_ui_refresh_notification(void)
 
         title.font = fonts_get_system_font(config_getFontResource(notification->fontTitle));
         subtitle.font = fonts_get_system_font(config_getFontResource(notification->fontSubtitle));
-
-	if(strlen(bodyText) == 1){ //If a single character, show it big(er) (for emoji)
-		//Should be a jumbo emoji!
-		body.font = fonts_get_system_font(FONT_KEY_GOTHIC_24);
-	}else{
-		body.font = fonts_get_system_font(config_getFontResource(notification->fontBody));
-	}
+	body.font = fonts_get_system_font(config_getFontResource(notification->fontBody));
 
         #ifdef PBL_COLOR
             if (notification->imageSize > 0)
@@ -185,15 +180,20 @@ static void text_display_layer_paint(Layer* layer, GContext* ctx)
 	#endif
 	
 	//Titles look better centred.
-    graphics_draw_text(ctx, title.text, title.font, title.bounds, GTextOverflowModeWordWrap, GTextAlignmentCenter, title.attributes);
+	graphics_draw_text(ctx, title.text, title.font, title.bounds, GTextOverflowModeWordWrap, GTextAlignmentCenter, title.attributes);
+	graphics_context_set_text_color(ctx, config_whiteText ? GColorWhite : GColorBlack);
 	
-    if (config_whiteText)
-        graphics_context_set_text_color(ctx, GColorWhite);
-    else
-        graphics_context_set_text_color(ctx, GColorBlack);
-	
-    graphics_draw_text(ctx, subtitle.text, subtitle.font, subtitle.bounds, GTextOverflowModeWordWrap, TEXT_ALIGNMENT, subtitle.attributes);
-    graphics_draw_text(ctx, body.text, body.font, body.bounds, GTextOverflowModeWordWrap, TEXT_ALIGNMENT, body.attributes);
+    	graphics_draw_text(ctx, subtitle.text, subtitle.font, subtitle.bounds, GTextOverflowModeWordWrap, TEXT_ALIGNMENT, subtitle.attributes);
+
+        if(strncmp(body.text,"\U00002764",3) == 0 && strlen(body.text) <= 6){ //If body a heart, show it big (for emoji)
+		if(jumboji == NULL){
+			jumboji = gbitmap_create_with_resource(RESOURCE_ID_HEART);
+		}
+		graphics_context_set_compositing_mode(ctx, GCompOpSet);
+		graphics_draw_bitmap_in_rect(ctx, jumboji, GRect(12, body.bounds.origin.y + 4, 120, 109)); //Magic numbers from known w/h of image
+	}else{
+		graphics_draw_text(ctx, body.text, body.font, body.bounds, GTextOverflowModeWordWrap, TEXT_ALIGNMENT, body.attributes);
+	}
 
     #ifndef PBL_LOW_MEMORY
 		if (curNotification != NULL && curNotification->notificationIcon != NULL)
@@ -259,8 +259,6 @@ void nw_ui_scroll_notification(bool down)
 {
     int16_t scrollBy = config_scrollByPage ? windowHeight : SINGLE_LINE_SCROLL_BY;
 
-    //GSize size = scroll_layer_get_content_size(scroll);
-
     int16_t pageNumber = (yScrollOffset - scrollBy + 1) / scrollBy;
     if (down)
         pageNumber--;
@@ -303,8 +301,7 @@ static void statusbarback_paint(Layer* layer, GContext* ctx)
     graphics_context_set_fill_color(ctx, backgroundColor);
     graphics_fill_rect(ctx, layer_get_frame(layer), 0, GCornerNone);
 
-    if (busy)
-    {
+    if (busy){
         graphics_context_set_compositing_mode(ctx, GCompOpSet);
         graphics_draw_bitmap_in_rect(ctx, busyIndicator, PBL_IF_ROUND_ELSE(GRect(120, 15, 9, 10),GRect(80, 3, 9, 10)));
     }
@@ -318,8 +315,7 @@ static void circles_paint(Layer* layer, GContext* ctx)
 
 #ifdef PBL_COLOR
     Notification* curNotification = nw_get_displayed_notification();
-    if (curNotification != NULL)
-    {
+    if (curNotification != NULL){
         backgroundColor = curNotification->notificationColor;
         circlesColor = getTextColor(backgroundColor);
     }
@@ -333,20 +329,16 @@ static void circles_paint(Layer* layer, GContext* ctx)
     int xDiff;
     int diameter;
 
-    if (numOfNotifications < 7)
-    {
+    if (numOfNotifications < 7){
         x = 9;
         xDiff = 11;
         diameter = 4;
-    }
-    else if (numOfNotifications < 9)
-    {
+    } else if (numOfNotifications < 9){
         x = 7;
         xDiff = 9;
         diameter = 3;
     }
-    else
-    {
+    else{
         x = 5;
         xDiff = 7;
         diameter = 2;
