@@ -243,8 +243,7 @@ static void sent_data(DictionaryIterator *iterator, void *context)
 		list_window_data_sent();
 }
 
-void closeApp(void)
-{
+void closeApp(void){
 	DictionaryIterator *iterator;
 	app_message_outbox_begin(&iterator);
 	dict_write_uint8(iterator, 0, 0);
@@ -254,6 +253,7 @@ void closeApp(void)
 	app_message_outbox_send();
 
 	closingMode = true;
+	
 }
 
 
@@ -282,6 +282,8 @@ static void send_initial_packet() {
 	app_comm_set_sniff_interval(SNIFF_INTERVAL_REDUCED);
 	app_message_outbox_send();
 }
+
+
 
 int main(void) {
 	appmessage_max_size = app_message_inbox_size_maximum();

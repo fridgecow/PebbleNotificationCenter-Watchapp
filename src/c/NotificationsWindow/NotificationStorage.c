@@ -10,6 +10,7 @@ Notification* notificationData[NOTIFICATION_SLOTS];
 static uint16_t freeNotificationMemory = NOTIFICATION_MEMORY_STORAGE_SIZE;
 uint8_t numOfNotifications = 0;
 
+
 static Notification* create_notification(uint16_t textLength, uint16_t iconSize)
 {
     Notification* notification = malloc(sizeof(Notification));
@@ -33,6 +34,7 @@ static Notification* create_notification(uint16_t textLength, uint16_t iconSize)
     #endif
 
     freeNotificationMemory -= sizeof(Notification) + sizeof(char) * textLength;
+
 
     return notification;
 }

@@ -74,8 +74,7 @@ void nw_switch_to_notification(uint8_t index)
     #endif
 }
 
-Notification* nw_get_displayed_notification()
-{
+Notification* nw_get_displayed_notification(){
     return notificationData[pickedNotification];
 }
 
@@ -165,8 +164,7 @@ void nw_vibrate(VibePattern* vibePattern, uint16_t totalLength)
 
 static void bt_handler(bool connected)
 {
-    if (!connected)
-    {
+    if (!connected){
         static char text[] = "Bluetooth Disconnected\0\0Your pebble has been disconnected from the phone.";
         static uint8_t textSize = sizeof(text) / sizeof(char);
 
@@ -287,8 +285,7 @@ static void window_appears(Window *window)
     setCurWindow(1);
 }
 
-static void window_load(Window *window)
-{
+static void window_load(Window *window){
     nw_ui_load(window);
 
     actions_menu_init();
@@ -300,8 +297,7 @@ static void window_load(Window *window)
 
     numOfNotifications = 0;
 
-    for (int i = 0; i < NOTIFICATION_SLOTS; i++)
-    {
+    for (int i = 0; i < NOTIFICATION_SLOTS; i++){
         notificationData[i] = NULL;
     }
 
@@ -352,10 +348,10 @@ static void window_unload(Window *window)
     if (main_noMenu)
         closingMode = true;
 
-    for (int i = 0; i < NOTIFICATION_SLOTS; i++)
-    {
+    for (int i = 0; i < NOTIFICATION_SLOTS; i++){
         destroy_notification(notificationData[i]);
     }
+  
 }
 
 void notification_window_init(void)

@@ -44,7 +44,6 @@ static Layer* textDisplayLayer;
 static Layer* textBackgroundLayer;
 
 static ContentIndicator* s_indicator;
-static Layer* s_indicator_up;
 static Layer* s_indicator_down;
 
 TextParameters title;
@@ -81,17 +80,14 @@ void nw_ui_refresh_notification(void)
     uint16_t titleMaximumWidth = textAreaFrame.size.w;
     uint16_t titleMinimumHeight = 0;
 
-    if (numOfNotifications < 1)
-    {
+    if (numOfNotifications < 1){
         titleText = "No notifications";
         notification = NULL;
 
         title.font = fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD);
         subtitle.font = title.font;
         body.font = title.font;
-    }
-    else
-    {
+    }else{
         notification = nw_get_displayed_notification();
         titleText = notification->text;
 
@@ -114,9 +110,6 @@ void nw_ui_refresh_notification(void)
         #ifdef PBL_COLOR
             if (notification->imageSize > 0)
                 additionalYOffset = windowHeight;
-		
-			 //Set title background color to match status bar
-             //text_layer_set_background_color(title, notification->notificationColor);
 
         #endif
 
@@ -266,7 +259,7 @@ void nw_ui_scroll_notification(bool down)
 {
     int16_t scrollBy = config_scrollByPage ? windowHeight : SINGLE_LINE_SCROLL_BY;
 
-    GSize size = scroll_layer_get_content_size(scroll);
+    //GSize size = scroll_layer_get_content_size(scroll);
 
     int16_t pageNumber = (yScrollOffset - scrollBy + 1) / scrollBy;
     if (down)

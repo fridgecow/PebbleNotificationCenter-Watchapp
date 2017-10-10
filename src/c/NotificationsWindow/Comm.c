@@ -92,6 +92,35 @@ static void nw_confirm_notification(int32_t notificationId)
     app_message_outbox_send();
 }
 
+//Update app glance callback - for every incoming notification.
+static void prv_update_app_glance(AppGlanceReloadSession *session,
+                                       size_t limit, void *context) {
+	// This should never happen, but developers should always ensure they are
+	// not adding more slices than are available
+	if (limit < 1) return;
+
+	// Get the notification text
+	const char *msg = context;
+
+	// Create the AppGlanceSlice
+	// NOTE: When .icon is not set, the app's default icon is used
+	const AppGlanceSlice entry = (AppGlanceSlice) {
+	  .layout = {
+	    .icon = APP_GLANCE_SLICE_DEFAULT_ICON,
+	    .subtitle_template_string = msg 
+	  },
+	  .expiration_time = APP_GLANCE_SLICE_NO_EXPIRATION
+	};
+
+	// Add the slice, and check the result
+	const AppGlanceResult result = app_glance_add_slice(session, entry);
+
+	if (result != APP_GLANCE_RESULT_SUCCESS) {
+	  APP_LOG(APP_LOG_LEVEL_ERROR, "AppGlance Error: %d", result);	
+		
+	}
+}
+
 static void received_message_new_notification(DictionaryIterator *received)
 {
     int32_t id = dict_find(received, 2)->value->int32;
@@ -245,6 +274,9 @@ static void received_message_more_text(DictionaryIterator *received)
         if (notification->scrollToEnd)
             nw_ui_scroll_to_notification_start();
     }
+
+    //App glance
+    app_glance_reload(prv_update_app_glance, notification->text);
 }
 
 static void received_message_notification_list_items(DictionaryIterator *received)
