@@ -103,7 +103,13 @@ void nw_ui_refresh_notification(void)
 
         title.font = fonts_get_system_font(config_getFontResource(notification->fontTitle));
         subtitle.font = fonts_get_system_font(config_getFontResource(notification->fontSubtitle));
-        body.font = fonts_get_system_font(config_getFontResource(notification->fontBody));
+
+	if(strlen(bodyText) == 1){ //If a single character, show it big(er) (for emoji)
+		//Should be a jumbo emoji!
+		body.font = fonts_get_system_font(FONT_KEY_GOTHIC_24);
+	}else{
+		body.font = fonts_get_system_font(config_getFontResource(notification->fontBody));
+	}
 
         #ifdef PBL_COLOR
             if (notification->imageSize > 0)
